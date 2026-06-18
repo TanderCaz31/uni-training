@@ -8,10 +8,16 @@ use Inertia\Inertia;
 
 class BookController extends Controller
 {
-    public function index() {
-        $books = Book::query()->get();
+    public function index(Request $request) {
 
-        return Inertia::render('Books/Index', ['books' => $books]);
+        $availableFilter = $request->boolean('available');
+
+        $q = Book::query()
+            ->when($availableFilter, fn ($q) => $q->where('books.available_copies', '>', 0));
+
+        $books = $q->get();
+
+        return Inertia::render('Books/Index', ['books' => $books, 'available' => $availableFilter]);
     }
 
     public function show(Book $book) {

@@ -13,5 +13,6 @@ class BookSeeder extends Seeder
     public function run(): void
     {
         Book::factory()->count(20)->create();
+        Book::factory()->count(5)->create(['available_copies' => 0]);
     }
 }
