@@ -39,6 +39,16 @@ const showingNavigationDropdown = ref(false);
                                 >
                                     Dashboard
                                 </NavLink>
+                                <!--
+                                    `books.*` is a wildcard so this link stays
+                                    highlighted on both the index and show pages.
+                                -->
+                                <NavLink
+                                    :href="route('books.index')"
+                                    :active="route().current('books.*')"
+                                >
+                                    Catalog
+                                </NavLink>
                             </div>
                         </div>
 
@@ -55,17 +65,12 @@ const showingNavigationDropdown = ref(false);
                                                 {{ $page.props.auth.user.name }}
 
                                                 <!--
-                                                    Role badge. `v-if` is Vue's conditional
-                                                    rendering: the element is left out of the DOM
-                                                    entirely (not just hidden) unless the condition
-                                                    is truthy, so this stays invisible until the
-                                                    backend shares a `role`. `$page` is Inertia's
+                                                    Role badge. `$page` is Inertia's
                                                     globally-injected page object, letting us read
                                                     shared props without importing anything.
                                                 -->
                                                 <span
-                                                    v-if="$page.props.auth.user.role"
-                                                    class="ms-2 rounded-full px-2 py-0.5 text-xs font-semibold capitalize"
+                                                    class="ms-2 mt-0.5 rounded-full px-2 py-0.5 text-xs font-semibold capitalize"
                                                     :class="
                                                         $page.props.auth.user.role === 'admin'
                                                             ? 'bg-indigo-100 text-indigo-700'
@@ -167,6 +172,13 @@ const showingNavigationDropdown = ref(false);
                         >
                             Dashboard
                         </ResponsiveNavLink>
+                        <!-- Same Catalog link as the desktop nav. -->
+                        <ResponsiveNavLink
+                            :href="route('books.index')"
+                            :active="route().current('books.*')"
+                        >
+                            Catalog
+                        </ResponsiveNavLink>
                     </div>
 
                     <!-- Responsive Settings Options -->
@@ -184,7 +196,6 @@ const showingNavigationDropdown = ref(false);
                             </div>
                             <!-- Same role badge as the desktop nav (see comment above). -->
                             <span
-                                v-if="$page.props.auth.user.role"
                                 class="mt-1 inline-block rounded-full px-2 py-0.5 text-xs font-semibold capitalize"
                                 :class="
                                     $page.props.auth.user.role === 'admin'
