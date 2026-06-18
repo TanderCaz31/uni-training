@@ -54,6 +54,27 @@ const showingNavigationDropdown = ref(false);
                                             >
                                                 {{ $page.props.auth.user.name }}
 
+                                                <!--
+                                                    Role badge. `v-if` is Vue's conditional
+                                                    rendering: the element is left out of the DOM
+                                                    entirely (not just hidden) unless the condition
+                                                    is truthy, so this stays invisible until the
+                                                    backend shares a `role`. `$page` is Inertia's
+                                                    globally-injected page object, letting us read
+                                                    shared props without importing anything.
+                                                -->
+                                                <span
+                                                    v-if="$page.props.auth.user.role"
+                                                    class="ms-2 rounded-full px-2 py-0.5 text-xs font-semibold capitalize"
+                                                    :class="
+                                                        $page.props.auth.user.role === 'admin'
+                                                            ? 'bg-indigo-100 text-indigo-700'
+                                                            : 'bg-gray-100 text-gray-600'
+                                                    "
+                                                >
+                                                    {{ $page.props.auth.user.role }}
+                                                </span>
+
                                                 <svg
                                                     class="-me-0.5 ms-2 h-4 w-4"
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -161,6 +182,18 @@ const showingNavigationDropdown = ref(false);
                             <div class="text-sm font-medium text-gray-500">
                                 {{ $page.props.auth.user.email }}
                             </div>
+                            <!-- Same role badge as the desktop nav (see comment above). -->
+                            <span
+                                v-if="$page.props.auth.user.role"
+                                class="mt-1 inline-block rounded-full px-2 py-0.5 text-xs font-semibold capitalize"
+                                :class="
+                                    $page.props.auth.user.role === 'admin'
+                                        ? 'bg-indigo-100 text-indigo-700'
+                                        : 'bg-gray-100 text-gray-600'
+                                "
+                            >
+                                {{ $page.props.auth.user.role }}
+                            </span>
                         </div>
 
                         <div class="mt-3 space-y-1">
